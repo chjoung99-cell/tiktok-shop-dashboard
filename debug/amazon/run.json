@@ -1,0 +1,73 @@
+{
+ "categories": {
+  "Women's Mules & Clogs": {
+   "path": [
+    "Women",
+    "Shoes",
+    "Mules & Clogs"
+   ],
+   "url": "https://www.amazon.com/Best-Sellers-Clothing-Shoes-Jewelry-Womens-Mules-Clogs/zgbs/fashion/679410011",
+   "items": 88
+  },
+  "Men's Mules & Clogs": {
+   "path": [
+    "Men",
+    "Shoes",
+    "Mules & Clogs"
+   ],
+   "error": "tree link not found: Men"
+  },
+  "Men's Loafers & Slip-Ons": {
+   "path": [
+    "Men",
+    "Shoes",
+    "Loafers & Slip-Ons"
+   ],
+   "error": "tree link not found: Men"
+  },
+  "Women's Loafers & Slip-Ons": {
+   "path": [
+    "Women",
+    "Shoes",
+    "Loafers & Slip-Ons"
+   ],
+   "error": "tree link not found: Women"
+  },
+  "Beauty & Personal Care": {
+   "path": [],
+   "url": "https://www.amazon.com/checkpoint/continue",
+   "items": 0
+  },
+  "Skin Care": {
+   "path": [
+    "Skin Care"
+   ],
+   "error": "tree link not found: Skin Care"
+  },
+  "Face Moisturizers": {
+   "path": [
+    "Skin Care",
+    "Face",
+    "Creams & Moisturizers",
+    "Face Moisturizers"
+   ],
+   "error": "tree link not found: Skin Care"
+  },
+  "Facial Serums": {
+   "path": [
+    "Skin Care",
+    "Face",
+    "Serums"
+   ],
+   "error": "tree link not found: Skin Care"
+  },
+  "Facial Sunscreens": {
+   "path": [
+    "Skin Care",
+    "Sunscreens & Tanning Products",
+    "Sunscreens"
+   ],
+   "error": "tree link not found: Skin Care"
+  }
+ }
+}
