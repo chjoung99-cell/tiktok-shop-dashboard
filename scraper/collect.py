@@ -101,7 +101,7 @@ def run(only_markets=None):
     rows, summary = [], {"date": today, "markets": {}}
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(args=["--disable-blink-features=AutomationControlled"])
+        browser = p.chromium.launch()
         for mk in markets:
             mdir = DEBUG / mk["id"]
             mdir.mkdir(parents=True, exist_ok=True)

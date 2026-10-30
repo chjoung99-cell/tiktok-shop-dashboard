@@ -1,16 +1,15 @@
 name: Collect TikTok Shop rankings
 
 on:
-  schedule:
-    - cron: "23 1 * * *"   # 매일 10:23 KST
+  # 일일 자동 수집은 중단: 틱톡샵 검색 페이지가 자동화 트래픽에 캡차를 띄움.
+  # 허가된 데이터 소스로 전환한 뒤 schedule 을 다시 켠다.
+  # schedule:
+  #   - cron: "23 1 * * *"   # 매일 10:23 KST
   workflow_dispatch:
     inputs:
       markets:
         description: "수집할 국가 id (공백 구분, 비우면 전체)"
         required: false
-  push:
-    branches: [main]
-    paths: ["config/**", "scraper/**", ".github/workflows/collect.yml"]
 
 permissions:
   contents: write
