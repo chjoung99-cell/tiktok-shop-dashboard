@@ -17,6 +17,44 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def amazon(brands):
+    """Keepa 수집분: 카테고리별 최신 Top N 목록 + 추적 브랜드의 일별 순위 추이."""
+    kdir = ROOT / "data/keepa"
+    path = kdir / "ranks.csv"
+    if not path.exists():
+        return None
+    cfg = yaml.safe_load((ROOT / "config/amazon.yml").read_text())
+    meta = json.loads((kdir / "products.json").read_text()) if (kdir / "products.json").exists() else {}
+    tracked = defaultdict(dict)
+    if (kdir / "tracked.csv").exists():
+        for r in csv.DictReader((kdir / "tracked.csv").open()):
+            tracked[r["date"]][f"{r['domain']}:{r['asin']}"] = r
+
+    def brand_of(m):
+        text = f"{m.get('brand', '')} {m.get('title', '')}".lower()
+        return next((b["id"] for b in brands if any(x in text for x in b["match"])), "")
+
+    rows = list(csv.DictReader(path.open()))
+    latest = max(r["date"] for r in rows)
+    top, history = [], []
+    for r in rows:
+        key = f"{r['domain']}:{r['asin']}"
+        m = meta.get(key, {})
+        b = brand_of(m)
+        if b:
+            history.append({"date": r["date"], "category": r["category"], "brand": b,
+                            "asin": r["asin"], "rank": int(r["rank"])})
+        if r["date"] == latest:
+            t = tracked[latest].get(key, {})
+            top.append({"category": r["category"], "rank": int(r["rank"]), "asin": r["asin"],
+                        "domain": r["domain"], "title": m.get("title", ""),
+                        "brand_name": m.get("brand", ""), "brand": b,
+                        "price": t.get("price", ""), "monthly_sold": t.get("monthly_sold", "")})
+    return {"updated": latest,
+            "categories": [{"id": c["id"], "name": c["name"]} for c in cfg["categories"]],
+            "top": top, "history": history}
+
+
 def main():
     brands = yaml.safe_load((ROOT / "config/brands.yml").read_text())["brands"]
     markets = yaml.safe_load((ROOT / "config/markets.yml").read_text())["markets"]
@@ -57,6 +95,7 @@ def main():
         "markets": [{"id": m["id"], "name": m["name"]} for m in markets],
         "series": series,
         "products": products,
+        "amazon": amazon(brands),
     }
     (ROOT / "docs/data.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
     print(f"{len(series)} series points, {len(products)} products, latest={latest_date}")

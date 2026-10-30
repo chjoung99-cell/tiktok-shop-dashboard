@@ -1,0 +1,53 @@
+# Keepa(Amazon) Best Sellers 모니터링 카테고리.
+#   domain: 1=미국 amazon.com, 2=영국 .co.uk, 3=독일, 5=일본 .co.jp, 6=캐나다
+#   node:   Amazon 카테고리 노드 ID. 모르면 비워두고 term/root 를 적으면
+#           첫 실행 때 Keepa 카테고리 검색으로 찾아 data/keepa/categories.json 에 저장한다.
+#   term:   카테고리 검색어 (카테고리 이름과 정확히 일치해야 함)
+#   root:   최상위 카테고리 이름 (동명 카테고리 구분용)
+top_n: 100
+categories:
+  - id: us_womens_clogs
+    domain: 1
+    name: "미국 · Women's Mules & Clogs"
+    node: 679410011
+  - id: us_mens_clogs
+    domain: 1
+    name: "미국 · Men's Mules & Clogs"
+    term: "Mules & Clogs"
+    root: "Clothing, Shoes & Jewelry"
+    parent: "Men"
+  - id: us_mens_loafers
+    domain: 1
+    name: "미국 · Men's Loafers & Slip-Ons"
+    term: "Loafers & Slip-Ons"
+    root: "Clothing, Shoes & Jewelry"
+    parent: "Men"
+  - id: us_beauty
+    domain: 1
+    name: "미국 · Beauty & Personal Care"
+    node: 3760911
+  - id: us_skin_care
+    domain: 1
+    name: "미국 · Skin Care"
+    node: 11060451
+  - id: us_face_moisturizers
+    domain: 1
+    name: "미국 · Face Moisturizers"
+    term: "Face Moisturizers"
+    root: "Beauty & Personal Care"
+  - id: us_facial_serums
+    domain: 1
+    name: "미국 · Facial Serums"
+    term: "Serums"
+    root: "Beauty & Personal Care"
+    parent: "Face"
+  - id: us_facial_sunscreens
+    domain: 1
+    name: "미국 · Facial Sunscreens"
+    term: "Sunscreens"
+    root: "Beauty & Personal Care"
+  - id: us_facial_mists
+    domain: 1
+    name: "미국 · Facial Mists"
+    term: "Facial Mists"
+    root: "Beauty & Personal Care"

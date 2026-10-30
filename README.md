@@ -27,3 +27,9 @@ python scraper/collect.py us     # 특정 국가만
 python scraper/build.py
 python -m http.server -d docs
 ```
+
+## Amazon Best Sellers (Keepa)
+- 설정: `config/amazon.yml` (카테고리 추가 시 `term`/`root` 만 적으면 노드 ID 자동 탐색)
+- 수집: `scraper/keepa.py` → `data/keepa/` (매일 09:41 KST, `.github/workflows/keepa.yml`)
+- 필요: 저장소 Settings → Secrets and variables → Actions → `KEEPA_API_KEY`
+- 토큰: 카테고리당 약 50 + 처음 보는 상품 1개당 1. 9개 카테고리 기준 첫날 약 1,300, 이후 하루 약 500~600

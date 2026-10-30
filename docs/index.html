@@ -9,7 +9,7 @@
   color-scheme: light;
   --surface-0: #f4f4f2; --surface-1: #fcfcfb; --border: #e3e2de;
   --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #7a7974;
-  --series-1: #2a78d6; --grid: #ecebe7;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100; --grid: #ecebe7;
   --good: #008300; --critical: #c7362f;
 }
 @media (prefers-color-scheme: dark) {
@@ -17,7 +17,7 @@
     color-scheme: dark;
     --surface-0: #111110; --surface-1: #1a1a19; --border: #2e2e2c;
     --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
-    --series-1: #3987e5; --grid: #262624;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --grid: #262624;
     --good: #3fae3f; --critical: #e66767;
   }
 }
@@ -25,7 +25,7 @@
   color-scheme: dark;
   --surface-0: #111110; --surface-1: #1a1a19; --border: #2e2e2c;
   --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
-  --series-1: #3987e5; --grid: #262624;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --grid: #262624;
   --good: #3fae3f; --critical: #e66767;
 }
 * { box-sizing: border-box; }
@@ -63,11 +63,34 @@ td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: now
 td a { color: inherit; }
 tr:last-child td { border-bottom: 0; }
 .note { color: var(--text-muted); font-size: 12px; margin-top: 24px; }
+h2.sec { font-size: 18px; margin: 40px 0 4px; }
+.summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--text-secondary); margin: 4px 0 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+tr.hit td { background: color-mix(in srgb, var(--series-1) 10%, transparent); }
+tr.hit td:first-child { box-shadow: inset 3px 0 0 var(--series-1); }
+.big-chart svg { height: 200px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>TikTok Shop 브랜드 모니터</h1>
+  <h1>소비재 브랜드 판매랭킹 모니터</h1>
+  <p class="sub">Amazon Best Sellers (Keepa) · TikTok Shop</p>
+
+  <h2 class="sec">Amazon Best Sellers</h2>
+  <p class="sub" id="amz-sub">불러오는 중…</p>
+  <div class="filters" id="amz-cats" role="group" aria-label="카테고리"></div>
+  <div class="summary" id="amz-summary"></div>
+  <div class="card big-chart" id="amz-chart-card" hidden>
+    <h2>추적 브랜드 최고 순위 추이</h2><div class="co">위쪽일수록 상위 · 카테고리 Top 100 기준</div>
+    <div class="legend" id="amz-legend"></div><div class="chart" id="amz-chart"></div>
+  </div>
+  <div class="tbl-wrap" style="margin-top:16px"><table>
+    <thead><tr><th>순위</th><th>브랜드</th><th>상품명</th><th>가격</th><th>월 판매(추정)</th></tr></thead>
+    <tbody id="amz-rows"></tbody>
+  </table></div>
+
+  <h2 class="sec">TikTok Shop</h2>
   <p class="sub" id="sub">불러오는 중…</p>
   <div class="filters" id="markets" role="group" aria-label="국가"></div>
   <div class="grid" id="cards"></div>
@@ -86,7 +109,7 @@ const fmt = n => n == null ? "–" : n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n >
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 let DATA, market = "all";
 
-fetch("data.json", {cache: "no-store"}).then(r => r.json()).then(d => { DATA = d; init(); })
+fetch("data.json", {cache: "no-store"}).then(r => r.json()).then(d => { DATA = d; amzInit(); init(); })
   .catch(() => { document.getElementById("sub").textContent = "아직 수집된 데이터가 없습니다."; });
 
 function init() {
@@ -148,6 +171,87 @@ function render() {
     <td class="num">${esc(p.price)}</td><td class="num">${fmt(+p.sold)}</td>
     <td class="num">#${esc(p.rank)}</td><td class="num">${esc(p.rating) || "–"}</td></tr>`).join("")
     : `<tr><td colspan="7" class="empty">수집된 상품 없음</td></tr>`;
+}
+
+// ---------- Amazon (Keepa) ----------
+let amzCat = null;
+const brandColor = id => `var(--series-${DATA.brands.findIndex(b => b.id === id) + 1})`;
+
+function amzInit() {
+  const A = DATA.amazon, sub = document.getElementById("amz-sub");
+  if (!A) { sub.textContent = "Keepa 데이터가 아직 없습니다. API 키 등록 후 첫 수집을 기다려 주세요."; return; }
+  sub.textContent = `최근 수집일 ${A.updated} · 카테고리별 Top 100 · 매일 자동 수집`;
+  const have = new Set(A.top.map(t => t.category));
+  const cats = A.categories.filter(c => have.has(c.id));
+  amzCat = cats[0]?.id;
+  const box = document.getElementById("amz-cats");
+  box.innerHTML = cats.map(c => `<button data-c="${c.id}" aria-pressed="${c.id === amzCat}">${esc(c.name)}</button>`).join("");
+  box.onclick = e => { const b = e.target.closest("button"); if (!b) return; amzCat = b.dataset.c;
+    box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); amzRender(); };
+  amzRender();
+}
+
+function amzRender() {
+  const A = DATA.amazon, bname = Object.fromEntries(DATA.brands.map(b => [b.id, b.name]));
+  const top = A.top.filter(t => t.category === amzCat).sort((a, b) => a.rank - b.rank);
+  const hist = A.history.filter(h => h.category === amzCat);
+  const dates = [...new Set(hist.map(h => h.date))].sort();
+  // 브랜드별: 오늘 Top100 내 상품 수, 최고 순위, 약 7일 전 최고 순위
+  const best = (b, d) => Math.min(...hist.filter(h => h.brand === b && h.date === d).map(h => h.rank));
+  const prevDate = d => { const c = new Date(d); c.setDate(c.getDate() - 7); return [...dates].reverse().find(x => new Date(x) <= c); };
+  document.getElementById("amz-summary").innerHTML = DATA.brands.map(b => {
+    const mine = top.filter(t => t.brand === b.id);
+    if (!mine.length && !hist.some(h => h.brand === b.id)) return "";
+    const now = mine.length ? mine[0].rank : null, pd = prevDate(A.updated), was = pd ? best(b.id, pd) : Infinity;
+    const chg = now != null && isFinite(was) ? was - now : null;
+    return `<div class="card"><h2>${esc(b.name)}</h2><div class="co">${esc(b.company)}</div><div class="kpis">
+      <div class="kpi"><div class="l">최고 순위</div><div class="v">${now ? "#" + now : "100위 밖"}</div></div>
+      <div class="kpi"><div class="l">Top 100 내 상품</div><div class="v">${mine.length}개</div></div>
+      <div class="kpi"><div class="l">7일 전 대비</div><div class="v ${chg > 0 ? "up" : chg < 0 ? "down" : ""}">${chg == null ? "–" : chg > 0 ? "▲" + chg : chg < 0 ? "▼" + -chg : "0"}</div></div>
+    </div></div>`;
+  }).join("") || `<div class="empty">이 카테고리 Top 100에 추적 브랜드 상품이 없습니다.</div>`;
+
+  const card = document.getElementById("amz-chart-card");
+  const series = DATA.brands.map(b => ({id: b.id, name: b.name, pts: dates.map(d => { const v = best(b.id, d); return isFinite(v) ? v : null; })}))
+    .filter(s => s.pts.some(v => v != null));
+  card.hidden = dates.length < 2 || !series.length;
+  if (!card.hidden) {
+    document.getElementById("amz-legend").innerHTML = series.map(s => `<span><i style="background:${brandColor(s.id)}"></i>${esc(s.name)}</span>`).join("");
+    const el = document.getElementById("amz-chart");
+    rankChart(el, dates, series);
+    window.onresize = () => rankChart(el, dates, series);
+  }
+
+  document.getElementById("amz-rows").innerHTML = top.map(t => `<tr class="${t.brand ? "hit" : ""}">
+    <td class="num">#${t.rank}</td><td>${esc(t.brand ? bname[t.brand] : t.brand_name)}</td>
+    <td><a href="https://www.amazon.${({1: "com", 2: "co.uk", 3: "de", 5: "co.jp", 6: "ca"})[t.domain] || "com"}/dp/${esc(t.asin)}" target="_blank" rel="noopener">${esc(t.title || t.asin)}</a></td>
+    <td class="num">${t.price ? "$" + t.price : "–"}</td><td class="num">${t.monthly_sold ? fmt(+t.monthly_sold) + "+" : "–"}</td></tr>`).join("")
+    || `<tr><td colspan="5" class="empty">데이터 없음</td></tr>`;
+}
+
+// 순위 추이 (y 반전: 1위가 위), 100위 밖은 선을 끊음
+function rankChart(el, dates, series) {
+  const W = Math.max(280, el.clientWidth || 600), H = 200, L = 28, R = 8, T = 10, B = 20;
+  const x = i => L + (W - L - R) * i / Math.max(1, dates.length - 1);
+  const y = r => T + (H - T - B) * (r - 1) / 99;
+  const path = s => s.pts.map((v, i) => v == null ? "" : `${i && s.pts[i - 1] != null ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="브랜드 최고 순위 추이">
+    ${[1, 25, 50, 75, 100].map(r => `<line x1="${L}" x2="${W - R}" y1="${y(r)}" y2="${y(r)}" stroke="var(--grid)" vector-effect="non-scaling-stroke"/>
+      <text class="axis" x="${L - 4}" y="${y(r) + 3}" text-anchor="end">${r}</text>`).join("")}
+    ${series.map(s => `<path d="${path(s)}" fill="none" stroke="${brandColor(s.id)}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join("")}
+    <line class="xh" y1="${T}" y2="${H - B}" stroke="var(--text-muted)" stroke-dasharray="2 2" vector-effect="non-scaling-stroke" visibility="hidden"/>
+    <text class="axis" x="${L}" y="${H - 4}">${dates[0].slice(5)}</text>
+    <text class="axis" x="${W - R}" y="${H - 4}" text-anchor="end">${dates.at(-1).slice(5)}</text>
+  </svg><div class="tip"></div>`;
+  const svg = el.querySelector("svg"), xh = el.querySelector(".xh"), tip = el.querySelector(".tip");
+  svg.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(dates.length - 1, Math.round((fx - L) / (W - L - R) * (dates.length - 1))));
+    xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("visibility", "visible");
+    tip.style.display = "block"; tip.style.left = x(i) / W * r.width + "px"; tip.style.top = T / H * r.height + 40 + "px";
+    tip.textContent = dates[i] + " · " + series.map(s => `${s.name} ${s.pts[i] == null ? "100위 밖" : "#" + s.pts[i]}`).join(" · ");
+  });
+  svg.addEventListener("pointerleave", () => { xh.setAttribute("visibility", "hidden"); tip.style.display = "none"; });
 }
 
 // 단일 시리즈 라인 차트 + 호버 툴팁

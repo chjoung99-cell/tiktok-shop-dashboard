@@ -1,0 +1,45 @@
+name: Keepa Amazon Best Sellers
+
+on:
+  schedule:
+    - cron: "41 0 * * *"   # 매일 09:41 KST
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["config/amazon.yml", "config/brands.yml", "scraper/keepa.py", ".github/workflows/keepa.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: keepa
+  cancel-in-progress: false
+
+jobs:
+  keepa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install PyYAML==6.0.2 requests==2.32.3
+      - name: Collect
+        env:
+          KEEPA_API_KEY: ${{ secrets.KEEPA_API_KEY }}
+        run: python scraper/keepa.py
+      - name: Build dashboard data
+        if: always()
+        run: python scraper/build.py
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/keepa docs/data.json
+          git diff --cached --quiet && exit 0
+          git commit -m "data: $(date -u +%F) Keepa best sellers"
+          git pull --rebase origin main
+          git push
