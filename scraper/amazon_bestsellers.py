@@ -45,6 +45,8 @@ ITEM_JS = r"""
 
 
 def blocked(page) -> bool:
+    if "/checkpoint/" in page.url or "/errors/validatecaptcha" in page.url:
+        return True
     body = page.inner_text("body")[:3000].lower()
     return "enter the characters you see below" in body or "captcha" in body
 
@@ -97,7 +99,7 @@ def main():
                 continue
             page.goto(BASE + root, wait_until="domcontentloaded")
             page.wait_for_timeout(3000)
-            if blocked(page):
+            if blocked(page):  # 봇 확인 페이지는 우회하지 않고 중단
                 rec["error"] = "captcha"
                 log["stopped"] = f"captcha at {cat}"
                 print("CAPTCHA - stopping", flush=True)

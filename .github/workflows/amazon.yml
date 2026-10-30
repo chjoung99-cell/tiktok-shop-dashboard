@@ -2,9 +2,6 @@ name: Amazon Best Sellers
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ["scraper/amazon_bestsellers.py", ".github/workflows/amazon.yml"]
 
 permissions:
   contents: write
