@@ -1,1 +1,61 @@
-{"updated":null,"brands":[],"markets":[],"series":[],"products":[]}
+{
+ "updated": null,
+ "brands": [
+  {
+   "id": "crocs",
+   "name": "Crocs",
+   "company": "Crocs Inc. (NASDAQ:CROX)",
+   "category": "footwear"
+  },
+  {
+   "id": "heydude",
+   "name": "HEYDUDE",
+   "company": "Crocs Inc. (NASDAQ:CROX)",
+   "category": "footwear"
+  },
+  {
+   "id": "centellian24",
+   "name": "센텔리안24 (Centellian24)",
+   "company": "동국제약 (KQ:086450)",
+   "category": "beauty"
+  },
+  {
+   "id": "dalba",
+   "name": "달바 (d'Alba)",
+   "company": "달바글로벌 (KS:483650)",
+   "category": "beauty"
+  }
+ ],
+ "markets": [
+  {
+   "id": "us",
+   "name": "미국"
+  },
+  {
+   "id": "uk",
+   "name": "영국"
+  },
+  {
+   "id": "jp",
+   "name": "일본"
+  },
+  {
+   "id": "my",
+   "name": "말레이시아"
+  },
+  {
+   "id": "id",
+   "name": "인도네시아"
+  },
+  {
+   "id": "th",
+   "name": "태국"
+  },
+  {
+   "id": "vn",
+   "name": "베트남"
+  }
+ ],
+ "series": [],
+ "products": []
+}

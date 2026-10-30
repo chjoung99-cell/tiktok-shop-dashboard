@@ -1,0 +1,411 @@
+{
+  "date": "2026-10-30",
+  "markets": {
+    "us": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/s/dalba"
+        }
+      ]
+    },
+    "uk": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/uk/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/uk/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/uk/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/uk/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/uk/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/uk/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/uk/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/uk/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/uk/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/uk/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/uk/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/uk/s/dalba"
+        }
+      ]
+    },
+    "jp": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/jp/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/jp/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/jp/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/jp/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/jp/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/jp/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/jp/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/jp/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/jp/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/jp/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/jp/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/jp/s/dalba"
+        }
+      ]
+    },
+    "my": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/my/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/my/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/my/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/my/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/my/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/my/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/my/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/my/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/my/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/my/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/my/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/my/s/dalba"
+        }
+      ]
+    },
+    "id": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/id/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/404?fromUrl=/shop/id/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/id/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/404?fromUrl=/shop/id/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/id/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/404?fromUrl=/shop/id/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/id/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/404?fromUrl=/shop/id/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/id/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/404?fromUrl=/shop/id/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/id/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/404?fromUrl=/shop/id/s/dalba"
+        }
+      ]
+    },
+    "th": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/th/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/th/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/th/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/th/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/th/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/th/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/th/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/th/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/th/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/th/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/th/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/th/s/dalba"
+        }
+      ]
+    },
+    "vn": {
+      "queries": [
+        {
+          "brand": "crocs",
+          "keyword": "crocs",
+          "url": "https://www.tiktok.com/shop/vn/s/crocs",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/vn/s/crocs"
+        },
+        {
+          "brand": "heydude",
+          "keyword": "hey dude shoes",
+          "url": "https://www.tiktok.com/shop/vn/s/hey%20dude%20shoes",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/vn/s/hey%20dude%20shoes"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "centellian24",
+          "url": "https://www.tiktok.com/shop/vn/s/centellian24",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/vn/s/centellian24"
+        },
+        {
+          "brand": "centellian24",
+          "keyword": "madeca cream",
+          "url": "https://www.tiktok.com/shop/vn/s/madeca%20cream",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/vn/s/madeca%20cream"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "d'alba",
+          "url": "https://www.tiktok.com/shop/vn/s/d%27alba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/vn/s/d%27alba"
+        },
+        {
+          "brand": "dalba",
+          "keyword": "dalba",
+          "url": "https://www.tiktok.com/shop/vn/s/dalba",
+          "cards": 0,
+          "brand_cards": 0,
+          "error": null,
+          "final_url": "https://www.tiktok.com/shop/vn/s/dalba"
+        }
+      ]
+    }
+  }
+}
