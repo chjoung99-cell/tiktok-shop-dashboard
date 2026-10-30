@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok Shop Monitor</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0: #f4f4f2; --surface-1: #fcfcfb; --border: #e3e2de;
+  --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #7a7974;
+  --series-1: #2a78d6; --grid: #ecebe7;
+  --good: #008300; --critical: #c7362f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0: #111110; --surface-1: #1a1a19; --border: #2e2e2c;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --series-1: #3987e5; --grid: #262624;
+    --good: #3fae3f; --critical: #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #111110; --surface-1: #1a1a19; --border: #2e2e2c;
+  --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+  --series-1: #3987e5; --grid: #262624;
+  --good: #3fae3f; --critical: #e66767;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface-0); color: var(--text-primary);
+  font: 14px/1.5 -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif; }
+main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { color: var(--text-secondary); margin: 0 0 20px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.filters button { border: 1px solid var(--border); background: var(--surface-1);
+  color: var(--text-secondary); border-radius: 999px; padding: 6px 14px; font: inherit; cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); border-color: var(--text-primary); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-width: 0; }
+.card h2 { font-size: 16px; margin: 0; }
+.card .co { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
+.kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-bottom: 12px; }
+.kpi .l { color: var(--text-muted); font-size: 12px; }
+.kpi .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.kpi .v small { font-size: 12px; font-weight: 400; color: var(--text-secondary); }
+.up { color: var(--good); } .down { color: var(--critical); }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: 140px; overflow: visible; }
+.chart .axis { fill: var(--text-muted); font-size: 10px; }
+.tip { position: absolute; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
+  font-size: 12px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -110%); display: none; }
+.empty { color: var(--text-muted); font-size: 13px; padding: 24px 0; text-align: center; }
+section.products { margin-top: 32px; }
+section.products h2 { font-size: 16px; }
+.tbl-wrap { overflow-x: auto; background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td a { color: inherit; }
+tr:last-child td { border-bottom: 0; }
+.note { color: var(--text-muted); font-size: 12px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>TikTok Shop 브랜드 모니터</h1>
+  <p class="sub" id="sub">불러오는 중…</p>
+  <div class="filters" id="markets" role="group" aria-label="국가"></div>
+  <div class="grid" id="cards"></div>
+  <section class="products">
+    <h2>브랜드 상위 상품 (최근 수집일, 누적 판매순)</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>브랜드</th><th>국가</th><th>상품명</th><th>가격</th><th>누적 판매</th><th>검색순위</th><th>평점</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </section>
+  <p class="note">누적 판매는 틱톡샵 상품 페이지에 표시되는 “sold” 수치의 합계이며, 기간 증가분이 해당 기간 판매량 추정치입니다.
+  검색 결과에 잡힌 상품만 집계되므로 브랜드 전체 매출과는 차이가 있습니다.</p>
+</main>
+<script>
+const fmt = n => n == null ? "–" : n >= 1e6 ? (n / 1e6).toFixed(1) + "M" : n >= 1e3 ? (n / 1e3).toFixed(1) + "K" : String(n);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+let DATA, market = "all";
+
+fetch("data.json", {cache: "no-store"}).then(r => r.json()).then(d => { DATA = d; init(); })
+  .catch(() => { document.getElementById("sub").textContent = "아직 수집된 데이터가 없습니다."; });
+
+function init() {
+  document.getElementById("sub").textContent = DATA.updated
+    ? `최근 수집일 ${DATA.updated} · 매일 자동 수집` : "아직 수집된 데이터가 없습니다.";
+  const box = document.getElementById("markets");
+  const seen = new Set(DATA.series.map(s => s.market));
+  const opts = [{id: "all", name: "전체"}, ...DATA.markets.filter(m => seen.has(m.id))];
+  box.innerHTML = opts.map(m => `<button data-m="${m.id}" aria-pressed="${m.id === market}">${esc(m.name)}</button>`).join("");
+  box.onclick = e => { const b = e.target.closest("button"); if (!b) return; market = b.dataset.m;
+    box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); render(); };
+  render();
+}
+
+// 선택 국가 기준 브랜드별 날짜 시계열 (전체 = 국가 합산)
+function seriesFor(brand) {
+  const by = {};
+  for (const s of DATA.series) {
+    if (s.brand !== brand || (market !== "all" && s.market !== market)) continue;
+    const p = by[s.date] ||= {date: s.date, sold: 0, products: 0, best_rank: null, share: []};
+    p.sold += s.sold; p.products += s.products;
+    if (s.best_rank != null) p.best_rank = p.best_rank == null ? s.best_rank : Math.min(p.best_rank, s.best_rank);
+    if (s.top10_share != null) p.share.push(s.top10_share);
+  }
+  return Object.values(by).sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function render() {
+  document.getElementById("cards").innerHTML = DATA.brands.map(b => {
+    const pts = seriesFor(b.id), last = pts.at(-1);
+    let delta = null;
+    if (last) {
+      const cut = new Date(last.date); cut.setDate(cut.getDate() - 7);
+      const base = [...pts].reverse().find(p => new Date(p.date) <= cut) || (pts.length > 1 ? pts[0] : null);
+      if (base && base !== last) delta = {v: last.sold - base.sold, days: Math.round((new Date(last.date) - new Date(base.date)) / 864e5)};
+    }
+    const share = last && last.share.length ? Math.round(last.share.reduce((a, b) => a + b) / last.share.length) : null;
+    return `<article class="card">
+      <h2>${esc(b.name)}</h2><div class="co">${esc(b.company)}</div>
+      <div class="kpis">
+        <div class="kpi"><div class="l">누적 판매 (추적 상품)</div><div class="v">${fmt(last?.sold)}</div></div>
+        <div class="kpi"><div class="l">${delta ? `최근 ${delta.days}일 증가` : "기간 증가"}</div>
+          <div class="v ${delta && delta.v > 0 ? "up" : delta && delta.v < 0 ? "down" : ""}">${delta ? (delta.v >= 0 ? "+" : "") + fmt(delta.v) : "–"}</div></div>
+        <div class="kpi"><div class="l">최고 검색순위</div><div class="v">${last?.best_rank != null ? "#" + last.best_rank : "–"}</div></div>
+        <div class="kpi"><div class="l">상위10 내 브랜드 비중</div><div class="v">${share != null ? share + "%" : "–"} <small>${last ? last.products + "개 상품" : ""}</small></div></div>
+      </div>
+      <div class="chart" data-brand="${b.id}">${pts.length > 1 ? "" : `<div class="empty">${pts.length ? "추이는 2일 이상 수집 후 표시됩니다" : "수집된 데이터 없음"}</div>`}</div>
+    </article>`;
+  }).join("");
+  document.querySelectorAll(".chart").forEach(el => { const pts = seriesFor(el.dataset.brand); if (pts.length > 1) line(el, pts); });
+
+  const prods = DATA.products.filter(p => market === "all" || p.market === market)
+    .sort((a, b) => b.sold - a.sold).slice(0, 40);
+  const bname = Object.fromEntries(DATA.brands.map(b => [b.id, b.name]));
+  const mname = Object.fromEntries(DATA.markets.map(m => [m.id, m.name]));
+  document.getElementById("rows").innerHTML = prods.length ? prods.map(p => `<tr>
+    <td>${esc(bname[p.brand])}</td><td>${esc(mname[p.market])}</td>
+    <td><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a></td>
+    <td class="num">${esc(p.price)}</td><td class="num">${fmt(+p.sold)}</td>
+    <td class="num">#${esc(p.rank)}</td><td class="num">${esc(p.rating) || "–"}</td></tr>`).join("")
+    : `<tr><td colspan="7" class="empty">수집된 상품 없음</td></tr>`;
+}
+
+// 단일 시리즈 라인 차트 + 호버 툴팁
+function line(el, pts) {
+  const W = 300, H = 140, L = 4, R = 4, T = 10, B = 18;
+  const ys = pts.map(p => p.sold), min = Math.min(...ys), max = Math.max(...ys), span = max - min || 1;
+  const x = i => L + (W - L - R) * i / (pts.length - 1);
+  const y = v => T + (H - T - B) * (1 - (v - min) / span);
+  const d = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.sold).toFixed(1)}`).join("");
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="누적 판매 추이">
+    <line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--grid)"/>
+    <path d="${d}" fill="none" stroke="var(--series-1)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+    <line class="xh" y1="${T}" y2="${H - B}" stroke="var(--text-muted)" stroke-dasharray="2 2" vector-effect="non-scaling-stroke" visibility="hidden"/>
+    <text class="axis" x="${L}" y="${H - 4}">${pts[0].date.slice(5)}</text>
+    <text class="axis" x="${W - R}" y="${H - 4}" text-anchor="end">${pts.at(-1).date.slice(5)}</text>
+  </svg><div class="tip"></div>`;
+  const svg = el.querySelector("svg"), xh = el.querySelector(".xh"), tip = el.querySelector(".tip");
+  svg.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(pts.length - 1, Math.round((fx - L) / (W - L - R) * (pts.length - 1))));
+    xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("visibility", "visible");
+    tip.style.display = "block"; tip.style.left = x(i) / W * r.width + "px"; tip.style.top = y(pts[i].sold) / H * r.height + "px";
+    tip.textContent = `${pts[i].date} · ${fmt(pts[i].sold)}`;
+  });
+  svg.addEventListener("pointerleave", () => { xh.setAttribute("visibility", "hidden"); tip.style.display = "none"; });
+}
+</script>
+</body>
+</html>

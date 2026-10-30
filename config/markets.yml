@@ -1,0 +1,53 @@
+# 수집 대상 국가. search_urls 는 후보 URL 목록이며 {q} 자리에 검색어가 들어간다.
+# 앞에서부터 시도해 상품이 잡히는 첫 URL을 쓴다. 어느 URL이 실제로 동작하는지는
+# debug/ 폴더의 수집 로그를 보고 조정한다.
+markets:
+  - id: us
+    name: 미국
+    locale: en-US
+    timezone: America/New_York
+    search_urls:
+      - "https://www.tiktok.com/shop/s/{q}"
+
+  - id: uk
+    name: 영국
+    locale: en-GB
+    timezone: Europe/London
+    search_urls:
+      - "https://www.tiktok.com/shop/gb/s/{q}"
+      - "https://www.tiktok.com/shop/uk/s/{q}"
+
+  - id: jp
+    name: 일본
+    locale: ja-JP
+    timezone: Asia/Tokyo
+    search_urls:
+      - "https://www.tiktok.com/shop/jp/s/{q}"
+
+  - id: my
+    name: 말레이시아
+    locale: en-MY
+    timezone: Asia/Kuala_Lumpur
+    search_urls:
+      - "https://www.tiktok.com/shop/my/s/{q}"
+
+  - id: id
+    name: 인도네시아
+    locale: id-ID
+    timezone: Asia/Jakarta
+    search_urls:
+      - "https://www.tiktok.com/shop/id/s/{q}"
+
+  - id: th
+    name: 태국
+    locale: th-TH
+    timezone: Asia/Bangkok
+    search_urls:
+      - "https://www.tiktok.com/shop/th/s/{q}"
+
+  - id: vn
+    name: 베트남
+    locale: vi-VN
+    timezone: Asia/Ho_Chi_Minh
+    search_urls:
+      - "https://www.tiktok.com/shop/vn/s/{q}"

@@ -1,0 +1,35 @@
+# 모니터링 대상 브랜드. 브랜드를 추가하려면 아래 형식으로 항목을 하나 더 붙이면 된다.
+#   id:       영문 소문자 식별자 (파일명·차트 키로 쓰임)
+#   name:     대시보드 표시 이름
+#   company:  투자 대상 회사 / 티커
+#   category: footwear | beauty | ...
+#   keywords: 틱톡샵에서 검색할 검색어 (여러 개 가능)
+#   match:    상품명에 이 문자열 중 하나가 있으면 해당 브랜드 상품으로 판정 (소문자)
+brands:
+  - id: crocs
+    name: Crocs
+    company: Crocs Inc. (NASDAQ:CROX)
+    category: footwear
+    keywords: ["crocs"]
+    match: ["crocs"]
+
+  - id: heydude
+    name: HEYDUDE
+    company: Crocs Inc. (NASDAQ:CROX)
+    category: footwear
+    keywords: ["hey dude shoes"]
+    match: ["hey dude", "heydude"]
+
+  - id: centellian24
+    name: 센텔리안24 (Centellian24)
+    company: 동국제약 (KQ:086450)
+    category: beauty
+    keywords: ["centellian24", "madeca cream"]
+    match: ["centellian", "madeca"]
+
+  - id: dalba
+    name: 달바 (d'Alba)
+    company: 달바글로벌 (KS:483650)
+    category: beauty
+    keywords: ["d'alba", "dalba"]
+    match: ["d'alba", "d’alba", "dalba"]
